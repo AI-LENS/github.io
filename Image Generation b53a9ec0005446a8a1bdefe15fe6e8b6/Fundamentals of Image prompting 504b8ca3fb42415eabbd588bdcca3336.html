@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Fundamentals of Image prompting</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="504b8ca3-fb42-415e-abbd-588bdcca3336" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/webb2.jpg" style="object-position:center 70%"/><h1 class="page-title">Fundamentals of Image prompting</h1><p class="page-description"></p></header><div class="page-body"><ul id="4e3477bd-1574-4a32-935c-797f2d277f4f" class="toggle"><li><details open=""><summary>Contents</summary><nav id="95001f69-9d80-4ddb-9a42-ce0d08776112" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#5961ab0e-b0d6-4bf3-ac0c-ad28d0aa9010">Basic elements of image prompt</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#09dd342d-83e0-4eb6-a224-89bee85f8db3">Subject Matters with Examples</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#c8be86bc-327d-4307-82ac-a0895835c6dc">Artistic Styles with Examples</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#af59289e-9962-4fcf-b029-72fc6cfdb4e9">Moods with Examples</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#2783fdfa-6d27-45ea-a645-fa0cba154d6c">Color schemes with Examples</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#6605c9fb-86a9-47ea-93b3-c0463e1fc963">Compositions with Examples</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#2a83fd29-11ec-4590-932b-886aa9fc9a28"><strong>Orientations with Examples</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#17a322e3-57be-4ba0-988d-f0fdde6034ac">Perspectives with Examples</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#638e2956-4c1b-450e-ad9b-8a03612a8a40">Angles with Examples</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a7300287-c1be-4d94-b86a-40fcab04c777">Context or Background Information with Examples</a></div></nav></details></li></ul><h1 id="5961ab0e-b0d6-4bf3-ac0c-ad28d0aa9010" class="">Basic elements of image prompt</h1><p id="e494892a-6307-4440-857c-fedf1edfe7dd" class="">To get a better image, it&#x27;s important to provide a detailed and clear prompt. Here are the key parts to include in your prompt:</p><ol type="1" id="fcd992e7-c24c-4ea9-865c-8a996852f695" class="numbered-list" start="1"><li><strong>Subject Matter</strong>: Clearly state what you want to see in the image. This could be a specific object, scene, concept, or character.</li></ol><ol type="1" id="9f4c6b5c-7d47-43e1-bf25-5c49f790ccd6" class="numbered-list" start="2"><li><strong>Style and Mood</strong>: Specify if you want the image in a particular artistic style (e.g., impressionist, surreal, photorealistic) or mood (e.g., dreamy, dark, vibrant). Remember, styles from artists whose latest work was created after 1912 cannot be used directly.</li></ol><ol type="1" id="edc07958-b8d6-4c0e-b6e0-51da8e00a23b" class="numbered-list" start="3"><li><strong>Color Scheme</strong>: If you have a preference for certain colors or tones, mention them. This helps in setting the overall look of the image.</li></ol><ol type="1" id="ed51ffd8-c86d-41b7-9b18-f6bdd50bde6d" class="numbered-list" start="4"><li><strong>Composition</strong>: Describe how you want the elements to be arranged. For example, if you want a central focus with other elements in the background, or if you want a symmetrical or asymmetrical composition.</li></ol><ol type="1" id="d3a31a04-31e6-4c30-b943-b5482cbebb51" class="numbered-list" start="5"><li><strong>Level of Detail</strong>: Indicate if you want a highly detailed image or something more simplistic or abstract.</li></ol><ol type="1" id="080f3d17-9ab6-4e63-8b80-6d8883c73ff5" class="numbered-list" start="6"><li><strong>Size and Orientation</strong>: Specify if you prefer a square, portrait (taller than wide), or landscape (wider than tall) format.</li></ol><ol type="1" id="acbbde5f-6a88-4773-86b5-34025c9f381b" class="numbered-list" start="7"><li><strong>Specific Elements</strong>: If there are particular details you want to include, like specific types of clothing, architectural styles, types of animals, or landscape features, mention them.</li></ol><ol type="1" id="46588a28-7eef-4f9d-952a-2f09d75af943" class="numbered-list" start="8"><li><strong>Perspective and Angle</strong>: Indicate if you want a bird’s-eye view, worm’s-eye view, side view, etc.</li></ol><ol type="1" id="30ee212f-6d66-4994-bd9f-778b347a3d5e" class="numbered-list" start="9"><li><strong>Context or Background Information</strong>: Providing a bit of background or context can help in creating an image that more accurately represents your vision.</li></ol><p id="3a48056c-c9ae-4bdb-93ff-38b084dc1199" class="block-color-red">Remember, the more specific and detailed your prompt, the more likely you are to get an image that meets your expectations. However, also be mindful of overloading the prompt with too many details, which can sometimes lead to unexpected results.</p><p id="f7908bc4-7c95-46b6-bfa2-d34ab345470e" class="">
+</p><h3 id="09dd342d-83e0-4eb6-a224-89bee85f8db3" class="">Subject Matters with Examples</h3><ol type="1" id="f3d35105-0622-4358-bee9-32f5f3651f32" class="numbered-list" start="1"><li><strong>Portraits</strong>: Depictions of people, capturing their likenesses and expressions.<ul id="56764c21-6ca9-47f1-96b9-a60cf530643a" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A detailed painting of a woman with an enigmatic smile, capturing her unique features and expression.</li></ul></li></ol><ol type="1" id="597f05ed-6abc-458c-b173-b6ac4ab4b3e1" class="numbered-list" start="2"><li><strong>Landscapes</strong>: Scenes of natural scenery like mountains, valleys, trees, rivers, and forests.<ul id="749aa9e2-c30a-4f0c-8db1-8937345fd0fc" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A serene landscape depicting a peaceful mountain scene with a flowing river in the foreground.</li></ul></li></ol><ol type="1" id="c1aaae0d-a749-4aec-b789-00128dce5827" class="numbered-list" start="3"><li><strong>Cityscapes</strong>: Urban landscapes showing city scenes, buildings, streets, and urban life.<ul id="f5a37590-7239-4547-9c47-f64b3da68007" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A vibrant painting showcasing the busy streets of New York City with its towering skyscrapers and bustling traffic.</li></ul></li></ol><ol type="1" id="02b1cd97-bd65-4cff-b347-b45ebf119eef" class="numbered-list" start="4"><li><strong>Still Life</strong>: Artwork featuring inanimate subjects, such as food, flowers, and household objects.<ul id="9ba28d11-593c-4f0a-b385-0e90c53bf4ae" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A painting of a table set with various fruits, a wine bottle, and a brightly colored vase.</li></ul></li></ol><ol type="1" id="2e258285-83e3-42f6-bef5-860f88729bd5" class="numbered-list" start="5"><li><strong>Animals</strong>: Art focusing on creatures from the animal kingdom.<ul id="28594d39-9dcd-47bc-83a6-759864fa7e71" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A realistic depiction of a lion in the savanna, capturing its majesty and strength.</li></ul></li></ol><ol type="1" id="e469cc0c-022a-4380-8dd6-fb844c019342" class="numbered-list" start="6"><li><strong>Abstract Concepts</strong>: Representations of ideas or concepts rather than physical objects.<ul id="aa77f564-5209-4d7e-bdf5-ea7ff58a6482" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An abstract composition representing themes like chaos and harmony through contrasting shapes and colors.</li></ul></li></ol><ol type="1" id="bc16e15b-fdcd-4f2e-8d86-c8ac827a0eae" class="numbered-list" start="7"><li><strong>Historical Events</strong>: Scenes depicting events from history.<ul id="d516a125-e427-4a01-bb26-fc1e518c84e2" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A dramatic portrayal of a famous battle scene from the American Revolution.</li></ul></li></ol><ol type="1" id="b97d9ad9-3f1d-4919-9e2a-1c03591e9a9e" class="numbered-list" start="8"><li><strong>Mythological and Religious Themes</strong>: Art based on mythology or religious stories and figures.<ul id="1e04f9da-8795-43e4-9026-84541a05ca44" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A painting illustrating a scene from Greek mythology, such as the labors of Hercules.</li></ul></li></ol><ol type="1" id="f7af0cdd-339f-42a0-bfd2-ce8f1e135146" class="numbered-list" start="9"><li><strong>Genre Scenes</strong>: Everyday life depictions, often showing ordinary people engaging in common activities.<ul id="a3287401-7cc0-4621-a451-f77b8143680b" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A scene of a bustling 19th-century market with vendors and shoppers.</li></ul></li></ol><ol type="1" id="2e8a1290-7a1f-4956-a0d3-01576701c356" class="numbered-list" start="10"><li><strong>Marine</strong>: Art that focuses on the sea or seascapes, including ships and maritime activities.<ul id="a74d8989-c882-49c6-8db0-fb6810d06b45" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A painting of an old sailing ship battling rough seas, with dramatic waves and a stormy sky.</li></ul></li></ol><ol type="1" id="67a10119-7b9d-4ca3-a4ab-2015883263d8" class="numbered-list" start="11"><li><strong>Fantasy and Science Fiction</strong>: Imaginary and futuristic themes, often including mythical creatures and advanced technology.<ul id="0d95bc27-b9b5-4ab4-9f03-ce48965f8468" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An artwork depicting a distant planet with alien landscapes and futuristic structures.</li></ul></li></ol><ol type="1" id="2f98ebf4-6660-41c0-995e-2c140f340353" class="numbered-list" start="12"><li><strong>Architectural</strong>: Focus on buildings and architectural elements, both interior and exterior.<ul id="eba1d1fe-b18c-4b0f-8c8a-46ac5d672685" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An intricate drawing of a Gothic cathedral, showcasing its detailed facade and stained glass windows.</li></ul></li></ol><ol type="1" id="f84ea65e-abda-42f5-905e-def67ba935da" class="numbered-list" start="13"><li><strong>Floral</strong>: Art that primarily focuses on flowers and floral arrangements.<ul id="ef41851f-79e5-4b05-827f-91bf2ce53563" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A bright and colorful painting of a garden in full bloom, with a variety of flowers and plants.</li></ul></li></ol><ol type="1" id="63ed947a-5e4b-4614-9f32-3e1373219d0c" class="numbered-list" start="14"><li><strong>Nudes</strong>: Artistic representations of the human figure in its naked form.<ul id="e4c38ec8-a848-4c56-b4c5-ce9c4ef09664" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A classic sculpture or painting that celebrates the human form, highlighting the beauty and anatomy of the body.</li></ul></li></ol><ol type="1" id="6f466cbb-2a1f-4a28-bfeb-e6f7c16ba284" class="numbered-list" start="15"><li><strong>Political and Social Commentary</strong>: Art that makes a statement or comment on political or social issues.<ul id="d62e6f8e-19e5-4e8e-ad17-c814d1f56a97" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A provocative piece that critiques a current political situation or social injustice, using symbolism and metaphor.</li></ul></li></ol><p id="be61678d-b531-4475-829a-ee07adae1a89" class="">Each of these subject matters brings a unique focus and perspective to the artwork, allowing artists to explore a wide range of themes and ideas through their creative expression.</p><p id="309fe6fd-c92a-4984-bcf3-a969be8352e9" class="">
+</p><h3 id="c8be86bc-327d-4307-82ac-a0895835c6dc" class="">Artistic Styles with Examples</h3><ol type="1" id="063f4bb7-6844-4c9f-89ab-ead0beef25c0" class="numbered-list" start="1"><li><strong>Realism</strong>: Lifelike representation of subjects.<ul id="db542b07-c714-49e4-adce-03b6fd7e8e47" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A detailed painting of a bustling city street, capturing every aspect of urban life with precision.</li></ul></li></ol><ol type="1" id="47f43593-1257-4087-94c7-30c71072aba0" class="numbered-list" start="2"><li><strong>Impressionism</strong>: Focus on light and color with less emphasis on detail.<ul id="1fffae31-ac7f-4691-8ddf-62522283b686" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A landscape painting with quick, light brushstrokes showing the play of light on a river.</li></ul></li></ol><ol type="1" id="e550b240-49b2-4b06-a444-b522930b0ab2" class="numbered-list" start="3"><li><strong>Expressionism</strong>: Distortion of form and color to evoke emotion.<ul id="5c4d9233-5f93-4cd5-988d-fc5992ecaee2" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A portrait with exaggerated and distorted features, using vibrant colors to express strong emotions.</li></ul></li></ol><ol type="1" id="7d0fc215-24b1-4feb-8f74-8882d1bb9ac5" class="numbered-list" start="4"><li><strong>Surrealism</strong>: Dream-like, fantastical imagery with unexpected juxtapositions.<ul id="f9439033-b5c7-477e-b822-0fd06aba8fd4" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A fantastical scene with a floating clock in a melting landscape, defying the laws of physics.</li></ul></li></ol><ol type="1" id="8095d296-0f38-4cb1-b9ce-d39b6b8c1d8a" class="numbered-list" start="5"><li><strong>Abstract</strong>: Art that doesn&#x27;t represent recognizable subjects, focusing on forms and colors.<ul id="ae321716-c3b8-4432-96b5-77ef85c395d3" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A canvas filled with bold geometric shapes and a spectrum of vibrant colors, with no discernible objects.</li></ul></li></ol><ol type="1" id="6f98d57e-b12e-4769-b508-4ed5e26437f6" class="numbered-list" start="6"><li><strong>Cubism</strong>: Objects broken up and reassembled in abstract form.<ul id="bcab87e6-ca33-4062-ba73-7537006b879d" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A fragmented and reassembled portrait showing multiple perspectives of the subject simultaneously.</li></ul></li></ol><ol type="1" id="7e1e65d8-acf7-4071-b44b-2af286ca0250" class="numbered-list" start="7"><li><strong>Fauvism</strong>: Bold, non-naturalistic colors.<ul id="2e4cd3f5-a0f5-4a64-b464-66602bff1e43" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A landscape painted with wild, exaggerated colors like bright pink trees and a purple sky.</li></ul></li></ol><ol type="1" id="6e3f1c37-a757-4227-83c5-1e40ab2fa0ed" class="numbered-list" start="8"><li><strong>Art Nouveau</strong>: Decorative style with curvy lines and natural forms.<ul id="ee4f200c-5fb3-4801-8c02-83c807594e92" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An illustration featuring flowing lines and organic forms, such as leaves, vines, and flowers.</li></ul></li></ol><ol type="1" id="74fadfa2-d39a-45fe-aea0-e62dbafbaa3d" class="numbered-list" start="9"><li><strong>Art Deco</strong>: Sleek, linear, often symmetrical designs.<ul id="93569cec-8bf5-4426-ab29-e888c736a42d" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A poster design with sleek geometric patterns, exuding a sense of luxury and modernity.</li></ul></li></ol><ol type="1" id="c1fae838-e1b1-4f96-87c8-3145b2a415c5" class="numbered-list" start="10"><li><strong>Minimalism</strong>: Simplistic, reduced forms and colors.<ul id="426d8af3-1f7c-469a-8224-c8e8743c5ed5" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A composition featuring a single, simple shape or form, using a minimal color palette.</li></ul></li></ol><h3 id="af59289e-9962-4fcf-b029-72fc6cfdb4e9" class="">Moods with Examples</h3><ol type="1" id="1b8d3c44-1c20-44b0-bab6-db684c630504" class="numbered-list" start="1"><li><strong>Serene</strong>: Calm, peaceful, untroubled.<ul id="8ab702a6-50de-4a45-9366-c53948001e70" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A painting of a tranquil lake at sunset, evoking a sense of peace and calmness.</li></ul></li></ol><ol type="1" id="73dad115-0b20-4660-b920-76d6fbc761ae" class="numbered-list" start="2"><li><strong>Ethereal</strong>: Light, airy, delicate, heavenly.<ul id="6106b842-3932-41dc-93c4-5d3b90522b33" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An artwork showing a light, misty forest scene with rays of sunlight filtering through.</li></ul></li></ol><ol type="1" id="bbc01849-a723-4381-ac53-4e5c70265bdb" class="numbered-list" start="3"><li><strong>Melancholic</strong>: Sad, somber, reflective.<ul id="650956ef-e042-4e7f-91e2-30fb183156a4" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A dimly lit, rainy cityscape, conveying a sense of loneliness and introspection.</li></ul></li></ol><ol type="1" id="220be4c2-87fc-4a0a-b0c5-570bf53f93e6" class="numbered-list" start="4"><li><strong>Mystical</strong>: Magical, mysterious, otherworldly.<ul id="62c2af4d-c89a-4e34-8409-7ab9aea9fb7e" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An image of an ancient forest shrouded in mist, with a hint of glowing lights suggesting a magical presence.</li></ul></li></ol><ol type="1" id="7c4f91e4-75ee-42a2-ab95-a4513be7f672" class="numbered-list" start="5"><li><strong>Dynamic</strong>: Energetic, vibrant, active.<ul id="db51e556-a54f-47d9-80a6-9275e545b469" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A painting capturing the motion and energy of a bustling market scene, full of movement and color.</li></ul></li></ol><ol type="1" id="ec4a6913-87a7-4917-8974-a83be5e9ded2" class="numbered-list" start="6"><li><strong>Nostalgic</strong>: Wistful affection for the past.<ul id="508e59ca-b6a7-4dc2-8368-7d7177932f41" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An artwork depicting a vintage car on a cobblestone street, evoking memories of a bygone era.</li></ul></li></ol><ol type="1" id="bab2a849-85dd-4089-a09b-6e30d9e34f8e" class="numbered-list" start="7"><li><strong>Sombre</strong>: Dark, gloomy, in tone.<ul id="9331c1af-c237-43e4-959c-8e4b23657291" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A dark, stormy seascape with crashing waves, conveying a sense of foreboding and melancholy.</li></ul></li></ol><ol type="1" id="9de0003a-3618-4b8b-a46f-c97035ac7752" class="numbered-list" start="8"><li><strong>Whimsical</strong>: Playfully quaint or fanciful.<ul id="e5f4515e-a3b8-4659-a9ab-3a40048ce4e9" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An imaginative scene with floating islands and whimsical creatures, full of playfulness and fantasy.</li></ul></li></ol><ol type="1" id="ad8bab5a-4406-48a9-b21f-93072ebf9a48" class="numbered-list" start="9"><li><strong>Elegant</strong>: Graceful and stylish in appearance.<ul id="58621e7b-c2ab-4515-ac6a-d620750fa17a" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A refined still-life painting featuring elegant objects like a delicate vase and a draped fabric.</li></ul></li></ol><ol type="1" id="85031d5f-c845-46e0-898e-17bbfc0225db" class="numbered-list" start="10"><li><strong>Surreal</strong>: Bizarre, dreamlike, and illogical.<ul id="0f144dbc-5741-47a0-af6a-ed2c0fae8a24" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An artwork with surreal elements like a staircase leading to nowhere and a door floating in the sky.</li></ul></li></ol><p id="77141cc2-06db-449f-8b36-36e67f07b764" class="">These styles and moods can be used as guidelines to convey specific artistic visions or emotional tones in the images you create or request.</p><p id="f86bce84-e0a3-4379-8d80-42935e50c7ab" class="">
+</p><h3 id="2783fdfa-6d27-45ea-a645-fa0cba154d6c" class="">Color schemes with Examples</h3><p id="8f1ad915-c580-4c27-939f-1fa0e1287a4c" class="">Color is a crucial element in visual art, and various color schemes can be used to set the mood, create harmony, or draw attention to specific parts of an image. Here&#x27;s a list of common color matters (or color schemes) along with examples to illustrate each:</p><ol type="1" id="d5bfdde9-6102-4155-9afb-037a9192df83" class="numbered-list" start="1"><li><strong>Monochromatic</strong>: Uses various shades, tones, and tints within a single color.<ul id="7348d313-cad5-400c-895e-402cb31d0e74" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: Different shades of blue to create a calm, cohesive ocean scene.</li></ul></li></ol><ol type="1" id="7d7ae9d6-8d34-4fc0-982d-3466c35bca2c" class="numbered-list" start="2"><li><strong>Analogous</strong>: Combines colors that are next to each other on the color wheel.<ul id="2b015ae6-a878-45fa-922d-221634b06f12" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A sunset scene using red, orange, and yellow to create a warm, harmonious effect.</li></ul></li></ol><ol type="1" id="4f87070c-2607-475f-899d-b39f186a4a51" class="numbered-list" start="3"><li><strong>Complementary</strong>: Uses colors opposite each other on the color wheel.<ul id="b06e5560-3ada-41f6-b8ba-2a85d0922c59" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A vibrant landscape with green grass and red flowers, offering a stark, eye-catching contrast.</li></ul></li></ol><ol type="1" id="81d22dce-7b90-41d4-a687-87fe600db148" class="numbered-list" start="4"><li><strong>Split-Complementary</strong>: Combines one color with the two colors adjacent to its complementary color.<ul id="a8d7094e-f933-417b-b5e2-670ae9b2b6e6" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A room interior with a blue dominant color, accented with orange and yellow decor.</li></ul></li></ol><ol type="1" id="73100c56-dd74-4874-b6d5-5c293ad066ec" class="numbered-list" start="5"><li><strong>Triadic</strong>: Uses three colors that are evenly spaced around the color wheel.<ul id="0731a4dd-621d-4829-a587-9fa518802fdc" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A playful and colorful children&#x27;s illustration using primary colors: red, yellow, and blue.</li></ul></li></ol><ol type="1" id="ff38c98d-444a-4557-a387-e50fd99b2276" class="numbered-list" start="6"><li><strong>Tetradic (Double Complementary)</strong>: Uses two pairs of complementary colors.<ul id="0c98f400-6dee-4607-ac3c-99a6f1434a0d" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An artwork with a rich color scheme of purple and yellow, complemented by teal and orange.</li></ul></li></ol><ol type="1" id="ea354bea-08a5-458e-8ff5-8276b4fd2d7f" class="numbered-list" start="7"><li><strong>Neutral</strong>: Involves using neutral colors like beige, ivory, taupe, black, gray, and shades of white.<ul id="63f08785-ce71-46c2-a962-495258b04547" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A modern and minimalist interior design image focusing on black, white, and gray elements.</li></ul></li></ol><ol type="1" id="d1afc614-d6cc-4f3e-86f4-9f567a89e211" class="numbered-list" start="8"><li><strong>Warm Colors</strong>: Uses colors that are typically associated with warmth, like red, orange, and yellow.<ul id="5182f2b1-7955-4c50-9b08-35d89a1566fe" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An autumn landscape with warm reds, oranges, and yellows, creating a cozy atmosphere.</li></ul></li></ol><ol type="1" id="c8af513c-b133-4683-8361-275858ae64a7" class="numbered-list" start="9"><li><strong>Cool Colors</strong>: Uses colors that evoke a sense of coolness, like blue, green, and purple.<ul id="6b702709-d5ac-4b5b-900d-df925c7b6265" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A tranquil and soothing image of a forest with various shades of green and blue.</li></ul></li></ol><ol type="1" id="587eb991-7ef6-4659-972f-c5938472c030" class="numbered-list" start="10"><li><strong>Pastel</strong>: Utilizes paler or less saturated versions of colors.<ul id="c54bbc4b-f705-44a9-8615-bcd719ddafed" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A soft and delicate floral arrangement using pastel pinks, lavenders, and light greens.</li></ul></li></ol><ol type="1" id="4f51fb63-389e-4f36-8dae-9dcc1d995019" class="numbered-list" start="11"><li><strong>Vibrant</strong>: Emphasizes bright and highly saturated colors.<ul id="da59162d-7bb3-4624-9d8a-6b7b14a5d361" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A carnival scene filled with bright, vivid colors that convey energy and excitement.</li></ul></li></ol><ol type="1" id="68acaeef-30f3-4d9d-a702-bfba3096a2ab" class="numbered-list" start="12"><li><strong>Muted</strong>: Uses colors that are toned down by adding gray.<ul id="38abd858-3315-4e69-9e1a-47e18eb1a43c" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A vintage-style image with muted earth tones, creating a nostalgic and subdued feel.</li></ul></li></ol><ol type="1" id="8f6d7f3b-7d70-44e5-a642-9dd8e5dd2fbb" class="numbered-list" start="13"><li><strong>Metallic</strong>: Incorporation of metallic shades like gold, silver, and bronze.<ul id="426bf2ec-a24e-458d-8b5e-2387b472aad2" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A luxurious image with shimmering gold and silver accents, giving it an opulent feel.</li></ul></li></ol><ol type="1" id="e7983175-580a-4823-9eb2-1b2679316bed" class="numbered-list" start="14"><li><strong>Earthy</strong>: Uses colors found in nature that are subdued and organic.<ul id="21b0a783-961b-43e0-9d43-8285f9d20e0f" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A landscape image focusing on deep greens, browns, and ochres, evoking a natural and grounded feeling.</li></ul></li></ol><ol type="1" id="2d0145bc-27ec-4020-a936-3f8f4802ad8e" class="numbered-list" start="15"><li><strong>Jewel Tones</strong>: Rich coloration reminiscent of gemstones, like sapphire blue, emerald green, and ruby red.<ul id="ac65b2d1-6a6a-42db-bdd0-a0616a1d366e" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A regal portrait with deep, saturated colors, giving it a sense of richness and depth.</li></ul></li></ol><p id="4f3db3c1-4534-4d40-92e8-2cece4400b40" class="">Each color scheme creates a different mood and effect in artwork, allowing for a wide range of expressions and atmospheres in your visual creations.</p><p id="f90f5481-a544-4242-974a-24cd985208b0" class="">
+</p><h3 id="6605c9fb-86a9-47ea-93b3-c0463e1fc963" class="">Compositions with Examples</h3><p id="07addbb6-011d-49a1-a308-b8caf7f91eed" class="">Composition in art refers to the arrangement of visual elements in a work, and it plays a crucial role in how the viewer perceives and interprets the artwork. Here are various types of compositions with examples:</p><ol type="1" id="5fb7eb2c-73ca-480a-81fe-67ac9b7fec11" class="numbered-list" start="1"><li><strong>Symmetrical Composition</strong>: Elements are arranged in a mirrored form on either side of a central axis.<ul id="db127fca-3453-4594-b144-bbef9ed1c487" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A portrait where the subject is centered, with equal visual weight on both sides.</li></ul></li></ol><ol type="1" id="6878982b-4093-4508-a150-45f667d5991e" class="numbered-list" start="2"><li><strong>Asymmetrical Composition</strong>: Elements are placed without symmetry, often creating a more dynamic and interesting visual.<ul id="1d73c6cb-943a-4dba-8601-622e7e2a0802" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A landscape where a tree is off to one side, balancing open space on the other.</li></ul></li></ol><ol type="1" id="19d4f3dc-75e6-4487-b0ee-0c9039fae09b" class="numbered-list" start="3"><li><strong>Radial Composition</strong>: Elements radiate out from a central point, creating a sense of movement.<ul id="9f542c48-6c74-4c21-901d-371f3427adb3" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A floral arrangement where petals radiate out from the center.</li></ul></li></ol><ol type="1" id="56b9795a-e7c1-4a72-989d-d1e6739cdc33" class="numbered-list" start="4"><li><strong>Triangular Composition</strong>: Elements are arranged or form an implied triangle shape, often used to create stability and focus.<ul id="43554f75-f820-4868-a06c-e75e1e379d73" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A group portrait arranged so that the subjects create a triangular form.</li></ul></li></ol><ol type="1" id="6c362984-f66b-4728-a703-c58b52831a55" class="numbered-list" start="5"><li><strong>Circular Composition</strong>: Elements are arranged in a circular manner, often leading the viewer&#x27;s eye in a circular motion.<ul id="6069c42b-c266-4854-8d84-7b30b73212a9" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A still life with objects arranged in a circle on a table.</li></ul></li></ol><ol type="1" id="97a7f9e9-c4c4-4576-ba21-8ad827910ab5" class="numbered-list" start="6"><li><strong>Diagonal Composition</strong>: Uses diagonal lines or arrangements for a sense of movement or tension.<ul id="0828e333-3505-4837-bdde-3e9b59e77970" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A street scene with a road or pathway leading diagonally through the frame.</li></ul></li></ol><ol type="1" id="415f466b-6bde-4629-bda5-186467a4d29d" class="numbered-list" start="7"><li><strong>Rule of Thirds</strong>: The image is divided into thirds, both horizontally and vertically, and key elements are placed along these lines or their intersections.<ul id="b909215d-1906-418a-8163-32bf29176112" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A photograph where the horizon is on the lower third line, balancing the sky and land.</li></ul></li></ol><ol type="1" id="b2ad4fc3-6369-43a3-8c6c-70c6cb79b197" class="numbered-list" start="8"><li><strong>Golden Ratio (Golden Spiral)</strong>: A composition based on the golden ratio, creating a natural-looking and aesthetically pleasing arrangement.<ul id="9bc3b21d-73cd-4b4e-8dcf-903f6774621e" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A nature scene where the elements follow a spiral path that leads the eye from the foreground to the background.</li></ul></li></ol><ol type="1" id="24a02d4b-db21-4ee5-a928-b0f5a3d433f8" class="numbered-list" start="9"><li><strong>Central Composition</strong>: The main subject is placed in the center, often used for emphasis and focus.<ul id="f52c612d-e99f-478b-bea3-22689a3e53e3" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A close-up of a flower with the bloom centered in the frame.</li></ul></li></ol><ol type="1" id="88983948-a640-4556-bcf4-f31cd77d9d3a" class="numbered-list" start="10"><li><strong>Grid Composition</strong>: The image is divided into a grid, and elements are aligned with the grid lines, creating a sense of order.<ul id="2f9a296d-7be5-4f14-9ab1-1a4583a59e71" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An architectural photograph where the building&#x27;s features align with a grid structure.</li></ul></li></ol><ol type="1" id="db172125-b2d2-476d-8e49-fc9af68d192f" class="numbered-list" start="11"><li><strong>Leading Lines</strong>: Uses lines to lead the viewer&#x27;s eye to the focal point of the image.<ul id="54667863-c7a0-4d4a-b2ec-e362172f047b" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A landscape with a river or road leading the eye to a mountain in the distance.</li></ul></li></ol><ol type="1" id="38bc3571-ce0f-4693-bffe-80714c9d896d" class="numbered-list" start="12"><li><strong>Frame within a Frame</strong>: Using elements within the image to create a frame around the main subject, drawing focus to it.<ul id="cb491eb2-d3eb-4c14-a13f-9ec63b55277a" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A window or doorway framing a person standing outside.</li></ul></li></ol><ol type="1" id="5b452933-4d4b-4b93-887e-b20d6d7062e2" class="numbered-list" start="13"><li><strong>Juxtaposition</strong>: Placing contrasting or opposing elements next to each other to highlight differences or create interest.<ul id="28877c9a-71d2-491d-bb63-dbde886de68b" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A modern sculpture placed in front of a historic building.</li></ul></li></ol><ol type="1" id="fc76dc66-8270-4ad8-a8f9-d2c4b5d739b6" class="numbered-list" start="14"><li><strong>Pattern and Repetition</strong>: Repeating visual elements to create a pattern, often used to convey a sense of harmony or rhythm.<ul id="c2ec5d0e-7b20-4dfb-8c86-679c50f0d340" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A series of arches in a hallway, creating a repetitive visual pattern.</li></ul></li></ol><ol type="1" id="f0cda66b-a7b3-47f7-86e0-8217c41eecbc" class="numbered-list" start="15"><li><strong>Dynamic Composition</strong>: A composition that conveys a sense of action or movement, often through asymmetrical arrangements or diagonal lines.<ul id="2a85cb08-a1e4-4ca4-9288-bb807b68d341" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A sports photograph capturing a moment of dynamic movement.</li></ul></li></ol><p id="23660591-b149-4c79-8146-3c414354df31" class="">Each type of composition offers a different way to guide the viewer&#x27;s eye and convey the intended message or emotion of the artwork. Artists often choose a composition based on the subject matter, the mood they want to convey, and their</p><p id="8523954c-28d0-4a58-987e-35b79bddd6bc" class="">personal artistic style.</p><h3 id="2a83fd29-11ec-4590-932b-886aa9fc9a28" class=""><strong>Orientations with Examples</strong></h3><ol type="1" id="3427ded1-6e7d-434f-bb1c-36d04f3396eb" class="numbered-list" start="1"><li><strong>Portrait Orientation</strong>: The height of the image is greater than the width. This is ideal for portraits, individual subjects, or anything where vertical composition is emphasized.<ul id="2d6dc4b2-aa15-44f7-8ca3-0fe4318abff9" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A portrait of a person, a tall building.</li></ul></li></ol><ol type="1" id="21b9ac80-85dd-4707-b09c-964609b83f0f" class="numbered-list" start="2"><li><strong>Landscape Orientation</strong>: The width of the image is greater than the height. It&#x27;s preferred for landscapes, wide scenes, or when horizontal composition is important.<ul id="17837ae7-e388-4cb1-ac64-44700e3e6878" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A panoramic view of a mountain range, a cityscape.</li></ul></li></ol><ol type="1" id="75586c8d-b5c9-4a5d-a759-457379b969b3" class="numbered-list" start="3"><li><strong>Square</strong>: The height and width are equal, creating a balanced composition suitable for a variety of subjects.<ul id="1c3b267b-a4ba-4923-bd32-1bb3532fc64d" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: An abstract design, an Instagram post.</li></ul></li></ol><ol type="1" id="90a734a1-2dcd-4dcd-b01a-aea57fa2f01e" class="numbered-list" start="4"><li><strong>Panoramic</strong>: An extended landscape orientation, much wider than its height. Ideal for expansive scenes or detailed wide-angle views.<ul id="ccbc1efc-1892-472f-97e5-d165a205eff8" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A wide panoramic shot of a beach or a bustling street scene.</li></ul></li></ol><ol type="1" id="0270e943-0332-4e7c-94c9-983cd00883c7" class="numbered-list" start="5"><li><strong>Custom Orientation</strong>: An unconventional orientation, potentially for creative or specific spatial requirements.</li></ol><p id="92c56ba4-51ee-4b25-8130-b2a65756dacc" class="">
+</p><p id="6e24537f-c6a7-447c-9a7d-d00753748075" class="">Perspective and angle in visual arts are crucial for defining the viewpoint and depth of a scene. Here&#x27;s a list of various perspectives and angles, along with examples to illustrate each:</p><h3 id="17a322e3-57be-4ba0-988d-f0fdde6034ac" class="">Perspectives with Examples</h3><ol type="1" id="b7b69d27-a118-43db-8acd-2ed6ce97743c" class="numbered-list" start="1"><li><strong>Linear Perspective</strong>: Creates the illusion of depth through converging lines that meet at one or more vanishing points.<ul id="af4a7cc3-32bc-4ee3-896f-dc53ee6aad48" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A road or railway tracks converging in the distance.</li></ul></li></ol><ol type="1" id="f673bffc-7f3b-4369-92ca-65508f52beff" class="numbered-list" start="2"><li><strong>Aerial (or Atmospheric) Perspective</strong>: Depicts depth by simulating changes affected by the atmosphere on the appearance of objects as they recede into the distance.<ul id="11489022-4477-459e-8372-533b0f7073bf" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: Mountains appearing bluer and less detailed in the distance.</li></ul></li></ol><ol type="1" id="ad2fb4d6-9325-410d-92e5-c291fc2fe0a4" class="numbered-list" start="3"><li><strong>One-Point Perspective</strong>: All major lines converge at a single point on the horizon.<ul id="ce8b0770-c0b0-48f3-8cbd-f4feef98b75f" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A straight road or hallway stretching away from the viewer.</li></ul></li></ol><ol type="1" id="82212c89-8603-459e-8692-e6829db8fb6a" class="numbered-list" start="4"><li><strong>Two-Point Perspective</strong>: Uses two vanishing points on the horizon line, often used for drawing architectural structures.<ul id="e51a1c20-b693-4441-9646-1dad51bb2795" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A corner of a building where two sets of parallel lines converge towards two different points.</li></ul></li></ol><ol type="1" id="dc4ca497-0ae5-4b44-b55b-a648e615bcf7" class="numbered-list" start="5"><li><strong>Three-Point Perspective</strong>: Incorporates three vanishing points, usually two on the horizon and one above or below, creating a sense of scale and dramatic effect.<ul id="d69878d5-c783-4e21-9a16-fa98699f0c2a" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A skyscraper viewed from ground level, converging towards the top.</li></ul></li></ol><ol type="1" id="21f706b7-c9af-401e-a783-75e74588ec8c" class="numbered-list" start="6"><li><strong>Isometric Perspective</strong>: Parallel lines remain parallel rather than converging, often used in technical drawings.<ul id="08756bc8-4b00-4747-97d4-31697f2b91df" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A diagram of a building or a machine.</li></ul></li></ol><h3 id="638e2956-4c1b-450e-ad9b-8a03612a8a40" class="">Angles with Examples</h3><ol type="1" id="5daea214-c26c-419b-b240-7fce0a1447ed" class="numbered-list" start="1"><li><strong>Eye-Level Angle</strong>: The subject is viewed from the observer&#x27;s eye level and creates a neutral, natural look.<ul id="bf31ed48-c043-45d2-a9ad-334936904603" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A photograph taken at the height of an average person&#x27;s eyes.</li></ul></li></ol><ol type="1" id="ffc87972-d19a-40c5-92ad-2d8034121b33" class="numbered-list" start="2"><li><strong>High Angle</strong>: The viewer looks down on the subject, often making it appear smaller or less significant.<ul id="2c74a21c-99ab-4fbe-8025-07d09ce58849" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: Viewing a scene from a balcony or hilltop.</li></ul></li></ol><ol type="1" id="593914a6-8042-48e5-9d0c-186158545ba6" class="numbered-list" start="3"><li><strong>Low Angle</strong>: The viewer looks up at the subject, which can make it seem more powerful or imposing.<ul id="b1e90ca3-5e6f-4ac1-a3a6-cc9047409d01" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: Looking up at a tall building or a person standing above.</li></ul></li></ol><ol type="1" id="c40a21e6-82ab-4f3b-84dd-87328b8f2b26" class="numbered-list" start="4"><li><strong>Bird&#x27;s-Eye View (or Overhead Angle)</strong>: The scene is viewed from directly above, giving a comprehensive view of the landscape or setting.<ul id="8f2e6d4a-26de-43fd-b401-b3f95f3d5f75" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: Aerial photograph or drone shot of a landscape.</li></ul></li></ol><ol type="1" id="afa45fcc-c85a-451b-aecb-b79f9adad6ac" class="numbered-list" start="5"><li><strong>Worm&#x27;s-Eye View</strong>: An extreme low angle shot looking up, as if from the ground.<ul id="bc9c1042-256c-4c10-8add-0e75c2b53647" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: Viewing a forest canopy from the forest floor.</li></ul></li></ol><ol type="1" id="20150f81-65ba-4a1b-92ae-af879503a5f9" class="numbered-list" start="6"><li><strong>Dutch Angle (or Tilted Angle)</strong>: The camera is tilted, making the horizon appear at an angle. This can create a sense of disorientation or tension.<ul id="7966ed51-9f71-4602-a783-9963bc9929dd" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A tilted shot of a character in a film to indicate psychological distress.</li></ul></li></ol><ol type="1" id="a05530c8-f5fb-4384-8895-a389b7e9f1db" class="numbered-list" start="7"><li><strong>Oblique Angle</strong>: Similar to the Dutch angle, but often more extreme, giving a sense of instability or chaos.<ul id="06d00009-f406-47b2-83d7-a206931bc60e" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: A dramatic scene in a movie shot with a heavily tilted camera angle.</li></ul></li></ol><p id="855d85d8-5853-49c6-8d66-5c5de8a59496" class="">Each perspective and angle offers a unique way to tell a story, convey a mood, or capture a subject, significantly impacting the viewer&#x27;s perception and interpretation of the image.</p><p id="4e1045a7-8786-4735-9f2a-df6d299a9531" class="">
+</p><h3 id="a7300287-c1be-4d94-b86a-40fcab04c777" class="">Context or Background Information with Examples</h3><p id="f3455d94-f7a4-4e20-a4b6-0d5266bedd92" class="">Context or background information in an image prompt adds depth and meaning to the visual content. It helps in setting the scene, providing historical or cultural background, or adding a narrative layer. Here are various types of context or background information you might include, with examples:</p><ol type="1" id="72932d99-50db-41e4-a3a7-05039de76c85" class="numbered-list" start="1"><li><strong>Historical Context</strong>: Relates the image to a specific period in history, including styles, events, or figures from that time.<ul id="9dc177e2-b5eb-4d3e-97c1-da947f0fa593" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Depict a bustling street scene from 1920s Paris, capturing the fashion and architecture of the era.&quot;</li></ul></li></ol><ol type="1" id="84fae0dd-867f-4002-9721-75546e089f53" class="numbered-list" start="2"><li><strong>Cultural Context</strong>: Incorporates elements that reflect a particular culture or societal norms.<ul id="0b3441f2-8c79-4cf3-938b-5c0dd4fcc8d9" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Create an image showcasing a traditional Japanese tea ceremony, with emphasis on cultural practices and attire.&quot;</li></ul></li></ol><ol type="1" id="9ddd7fa0-84d7-4774-90c1-104142a2a44c" class="numbered-list" start="3"><li><strong>Geographical Context</strong>: Specifies a location, which can influence the architecture, landscape, or flora and fauna in the image.<ul id="f9eb9d13-3383-42bb-b154-263644e88354" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Illustrate a scene from the Amazon rainforest, highlighting its unique biodiversity.&quot;</li></ul></li></ol><ol type="1" id="fda045de-28a0-4b2f-90bd-c418a4df8a93" class="numbered-list" start="4"><li><strong>Narrative Context</strong>: Adds a story element to the image, creating a sense of unfolding events or character development.<ul id="0d96f0e4-b65c-4bdb-916a-dcfd5308df9f" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Convey a story of a young adventurer discovering an ancient hidden temple in the jungle.&quot;</li></ul></li></ol><ol type="1" id="a756be16-915b-4d3a-a6ec-13d3c40fb486" class="numbered-list" start="5"><li><strong>Emotional Context</strong>: Sets an emotional tone or mood for the image, influencing its interpretation.<ul id="d19ab5aa-a37b-4f3f-a5b5-68a1eb3f0c55" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Capture the poignant moment of a farewell at a train station, focusing on expressions and body language.&quot;</li></ul></li></ol><ol type="1" id="b2a047ac-810c-45cc-b336-c0c363eff054" class="numbered-list" start="6"><li><strong>Symbolic or Thematic Context</strong>: Involves symbols or themes that add a layer of meaning, such as freedom, love, or decay.<ul id="9a28bfa4-a67b-42d5-a2d3-675ec30e801b" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Use the theme of &#x27;time&#x27; in a still life, incorporating clocks, withering flowers, and an hourglass.&quot;</li></ul></li></ol><ol type="1" id="73ca7ffb-cd27-40c1-a4f8-834d6504fa76" class="numbered-list" start="7"><li><strong>Scientific or Educational Context</strong>: Provides information that makes the image informative or educational.<ul id="41f381a9-2701-480d-a6d8-cd826f6e3551" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Create an accurate depiction of the solar system, showcasing each planet&#x27;s characteristics.&quot;</li></ul></li></ol><ol type="1" id="2a349706-aa82-45a0-8557-b3e5f7bc9df9" class="numbered-list" start="8"><li><strong>Fantasy or Imaginative Context</strong>: Incorporates elements from fantasy, sci-fi, or an artist&#x27;s imagination.<ul id="d7f3ed41-6329-4bdb-b1b2-33331de2a085" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Design a fantastical creature in its habitat, blending elements from various real animals.&quot;</li></ul></li></ol><ol type="1" id="6e569c68-d139-42aa-9ca2-7ef3622315e5" class="numbered-list" start="9"><li><strong>Seasonal Context</strong>: Reflects a particular season, influencing the color palette, mood, and activities depicted.<ul id="c2889b22-afac-48a2-821e-fa0963d66046" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Show a cozy winter scene with a cabin surrounded by snow-covered trees.&quot;</li></ul></li></ol><ol type="1" id="fac19168-1d42-4ac9-aac1-681ef3af7239" class="numbered-list" start="10"><li><strong>Temporal Context</strong>: Indicates a specific time of day or night, affecting the lighting and mood of the image.<ul id="0cf949db-1d25-48e1-b81d-d70c4cd64484" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Illustrate a bustling cityscape during the rush hour of early evening with dynamic lighting.&quot;</li></ul></li></ol><ol type="1" id="57ba2daf-c463-4e60-b594-ab6124a2b648" class="numbered-list" start="11"><li><strong>Political or Social Commentary</strong>: Offers a statement or critique on political or social issues.<ul id="e6cf4811-050d-417b-b373-9c0c4aa9eed5" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Create a powerful image that comments on the impact of technology on modern life.&quot;</li></ul></li></ol><ol type="1" id="c0d13674-14ff-43d9-b977-e0bdc761197e" class="numbered-list" start="12"><li><strong>Personal or Biographical Context</strong>: Relates to the personal experiences or life of an individual.<ul id="3d4c43dc-df14-4f4c-854a-13e34c0e774f" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Portray the artist&#x27;s childhood home, filled with memories and personal objects.&quot;</li></ul></li></ol><ol type="1" id="7214e778-ce25-4f02-8be5-380bf9baacd1" class="numbered-list" start="13"><li><strong>Mystical or Spiritual Context</strong>: Introduces elements of spirituality or mysticism.<ul id="d137d823-597d-4439-b819-51060277bed7" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Depict a serene landscape that conveys a sense of spiritual peace and connection with nature.&quot;</li></ul></li></ol><ol type="1" id="7785616a-586e-4cf1-8b5d-118095358ecc" class="numbered-list" start="14"><li><strong>Futuristic or Technological Context</strong>: Focuses on future scenarios or technological advancements.<ul id="30fd611a-9db4-4783-a7a1-ccadcc85d799" class="bulleted-list"><li style="list-style-type:disc"><em>Example</em>: &quot;Visualize a city in the year 2100, with advanced technology and futuristic architecture.&quot;</li></ul></li></ol><p id="1c689f81-c58f-472e-a51e-f6a3ae25c62e" class="">Each type of context or background information can significantly influence the interpretation and impact of an image, guiding the viewer towards a deeper understanding of its content and purpose.</p><p id="18ad447a-6962-47e0-a319-a9ccd9018602" class="">
+</p><p id="71b936a3-27ad-4ac8-a9f9-5b8da25dac49" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

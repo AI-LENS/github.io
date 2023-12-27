@@ -1,0 +1,678 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Midjourney basics</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2e1e9dd1-f2e5-4a76-bf9e-0a3947a7c6e5" class="page sans"><header><h1 class="page-title">Midjourney basics</h1><p class="page-description"></p></header><div class="page-body"><ul id="6138de74-6707-4d61-9052-118d8f6734c5" class="toggle"><li><details open=""><summary><strong>Table of contents</strong></summary><nav id="714b8cde-3b6a-4e5a-997d-c14df362d532" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#7dcd42b6-7199-46a6-8676-d05baff55de7">Shorten</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#54a9f570-d180-47fe-b85a-3b0f671efa2e"><strong>Analyze a Prompt with </strong><strong>/Shorten</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#922b52c9-f522-46b5-902c-25bff7785fed"><strong>Shorten Command Example</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#2f3efa6b-5d5f-4c39-81f2-d65ecb5aa218">Multi Prompts</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#2dca69e2-5f48-4348-a0e6-b43b8ed062ad"><strong>Multi-Prompt Basics</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a7600cce-7939-4332-89d6-302ac2d8588d"><strong>Prompt Weights</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#5c5078e7-1e59-4c11-af32-68f4e81a11bc"><strong>Negative Prompt Weights</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#8e4b0c56-af51-4312-b8b1-80334cd1d6b3"><strong>The </strong><code><strong>-no</strong></code><strong> Parameter</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#7244c13e-0b87-44b5-8cdf-d2919c00e405">Stylize</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#aedaa4d1-5d7f-412c-84ad-95290ad05f74"><strong>The Midjourney Bot has been trained to produce images that favor artistic color, composition, and forms. The </strong><code><strong>-stylize</strong></code><strong> or </strong><code><strong>-s</strong></code><strong> parameter influences how strongly this training is applied. Low stylization values produce images that closely match the prompt but are less artistic. High stylization values create images that are very artistic but less connected to the prompt.</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#911a74c7-002e-46a9-9bc7-54b9cc02e656"><strong>Common Stylize Settings</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#73a5b625-0854-4e19-9ba9-40c3bffc0820"><strong>Influence of Stylize on Model Version 5.2</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#2f88ef16-fa08-46cf-9229-bde75d3645a9"><code><strong>-stylize 0</strong></code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#0c62d404-b30c-428c-8173-fbb49b730c35"><code><strong>-stylize 50</strong></code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#eab191b0-ab42-435b-a73a-058e8fe91e7b"><code><strong>-stylize 100</strong></code> (default)</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#72b657c4-88c4-4fc1-91a3-541cb494f758"><code><strong>-stylize 250</strong></code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#978857bf-3807-48ec-ae77-84424489100b"><code><strong>-stylize 500</strong></code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#54789919-bfce-4e7b-b753-298ad07c8495"><code><strong>-stylize 750</strong></code></a></div></nav></details></li></ul><h1 id="7dcd42b6-7199-46a6-8676-d05baff55de7" class="">Shorten</h1><ul id="78ef8370-dabc-4500-8fe6-2ec3437f531c" class="bulleted-list"><li style="list-style-type:disc">Light</li></ul><hr id="0a1587ba-f869-4625-b1fd-92a6abf4293e"/><p id="1a479859-adf8-44c9-b166-314881fc663a" class=""><strong>The </strong><code><strong>/shorten</strong></code><strong> command analyzes your prompt, highlights some of your prompt&#x27;s most influential words, and suggests unnecessary words you could remove. With this command, you can optimize your prompt by focusing on essential terms. </strong></p><p id="a2248e71-8e8a-45ac-b562-dd38ee73c69f" class=""><code><strong>/shorten</strong></code> is not compatible with <a href="https://docs.midjourney.com/multi-prompts"><strong>multi prompts</strong></a> or the <a href="https://docs.midjourney.com/no"><code><strong>--no</strong></code></a><a href="https://docs.midjourney.com/no"><strong> parameter</strong></a></p><hr id="686cb910-5192-493b-af9b-c0c39b1cadcf"/><h2 id="54a9f570-d180-47fe-b85a-3b0f671efa2e" class=""><strong>Analyze a Prompt with </strong><strong>/Shorten</strong></h2><p id="5e680dc9-c1ef-4492-b825-12d12689290c" class="">The Midjourney bot analyzes your prompt by breaking it down into smaller units known as tokens. These tokens can be phrases, words, or even syllables. The Midjourney bot converts these tokens into a format it can understand. It uses them with the associations and patterns learned during its training to guide how your image is generated. Think of tokens as the building blocks that help the Midjourney bot make sense of the input and create the desired visual output.</p><p id="8d789466-04d2-4d6a-9d27-c48544b66894" class="">Long prompts with unnecessary words, lengthy descriptions, poetic phrases, or direct addressing of the bot (&quot;Please make me an image,&quot; &quot;Thank you for your help, Midjourney Bot!&quot;) can lead to unexpected elements being added to your images.</p><p id="3e8889c6-8a51-4d29-8461-57c1958b9c9c" class="">The <code><strong>/shorten</strong></code> command can help you discover the most important words in your prompt and what words you can omit.</p><h3 id="922b52c9-f522-46b5-902c-25bff7785fed" class=""><strong>Shorten Command Example</strong></h3><p id="e1a536d8-eb97-4e23-937e-18985a4b821e" class="">If you want to create a pile of sprinkle covered donuts you might try the prompt:</p><p id="4016cf81-c386-4065-9fde-65ffef4ea639" class=""><code><strong>Please create a whimsical majestic tower of donuts, intricately crafted and adorned with a mesmerizing array of colorful sprinkles. Bring this sugary masterpiece to life, ensuring every detail is rendered in stunning magical realism. Thank you!</strong></code></p><figure id="1cb23702-93c7-44a8-9138-0b94d5d33da1" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/MJ_Shorten_Original.jpg"><img style="width:400px" src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/MJ_Shorten_Original.jpg"/></a></figure><p id="0a322803-89ea-4ebc-bba9-e51eca503cab" class="">If you use <code><strong>/shorten</strong></code> command with the above prompt the Midjourney Bot will return the following information:</p><p id="ffd57636-f8c0-4153-a2cf-0df3a109e7ea" class=""><strong>IMPORTANT TOKENS</strong></p><p id="722eb7f6-da51-4d2b-9c04-bb901988fbf7" class="">Please <del>create</del> a whimsical <strong>majestic tower</strong> of <strong>donuts</strong>, intricately crafted and adorned with a mesmerizing array of <strong>colorful sprinkles</strong>. Bring this <strong>sugary</strong> masterpiece to life, <del>ensuring every</del> detail is rendered in <del>stunning</del> <strong>magical realism</strong>. <del>Thank you!</del></p><p id="ef5b5d31-b221-41f9-9061-ad9b687e8f7e" class=""><strong>SHORTENED PROMPTS</strong><div class="indented"><p id="51cf744e-39e6-404e-aead-e5bf2105bfe8" class="">1️⃣ Please, majestic tower of donuts, crafted, array of colorful sprinkles, sugary masterpiece, rendered, magical realism</p><p id="cdb00a25-7a66-4ef1-911e-6689d6304d44" class="">2️⃣ Please, majestic tower of donuts, colorful sprinkles, sugary masterpiece, rendered, magical realism</p><p id="2b78239f-d974-46c2-960b-d51f375e50d4" class="">3️⃣ majestic tower of donuts, colorful sprinkles, sugary, magical realism</p><p id="c1813e7b-0052-4554-b317-ddcbbd9702e4" class="">4️⃣ majestic tower of donuts, colorful sprinkles, magical</p><p id="52e9d819-4918-48f7-b7bc-731b03d0da29" class="">5️⃣ tower of donuts, sprinkles</p></div></p><p id="6ebdb4f5-20a8-41df-95fd-5a5baa014e38" class="">The most Important tokens in your prompt are highlighted in <strong>bold</strong>, the least important are <del>stikethroughed</del>. You will also be given 5 possible shorter prompts based on this information.</p><h1 id="2f3efa6b-5d5f-4c39-81f2-d65ecb5aa218" class="">Multi Prompts</h1><ul id="5dda08b3-1ea7-4fda-9013-28af741fab11" class="bulleted-list"><li style="list-style-type:disc">Light</li></ul><hr id="60d89ab5-b7a4-4a77-950f-05984b02049a"/><p id="6614b680-3bd6-4683-8ed2-9b8a804f697d" class="">The Midjourney Bot can blend multiple concepts using <mark class="highlight-red"><strong>:: </strong></mark><mark class="highlight-red">as a separator</mark>. Using a multi-prompt allows you to assign relative importance to the concept in the prompt, helping you control how they are blended together. </p><h2 id="2dca69e2-5f48-4348-a0e6-b43b8ed062ad" class=""><strong>Multi-Prompt Basics</strong></h2><p id="5e83f056-76d2-47a7-bc64-879cb03ac3a1" class="">Adding a double colon <code><strong>::</strong></code> to a prompt indicates to the Midjourney Bot that it should consider each part of the prompt individually. For the prompt <code><strong>space ship</strong></code> both words are considered together, and the Midjourney Bot produces images of sci-fi spaceships. If the prompt is separated into two parts, <code><strong>space:: ship</strong></code>, both concepts are considered separately, then blended together creating a sailing ship traveling through space.</p><p id="3757671f-bd21-4508-8f91-8d7fa60ddf70" class="">There is no space between the double colons <code><strong>::</strong></code></p><p id="a8350c92-6bb4-4c72-af8f-7e7330730fb0" class="">Multi-prompts work with <a href="https://docs.midjourney.com/models"><strong>Model Versions</strong></a> <code><strong>1</strong></code>, <code><strong>2</strong></code>, <code><strong>3</strong></code>, <code><strong>4</strong></code>, <code><strong>&#x27;5</strong></code>, <code><strong>niji</strong></code>, and <code><strong>niji 5</strong></code></p><p id="8a8aa94c-8b33-4900-b527-1dee4262831e" class="">Any <a href="https://docs.midjourney.com/parameter-list"><strong>parameters</strong></a> are still added to the very end of the prompt.<div class="indented"><h3 id="2440e5a7-95a4-47cc-969c-b869c08ea81b" class=""><code><strong>space ship</strong></code></h3></div></p><figure id="ceddd8f4-e558-44d3-a4c3-6bf663dba1f0" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space-Ship.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space-Ship.jpg"/></a></figure><p id="e0bd0d97-d21f-453f-9902-d9c1e0ef962d" class=""><em>space ship</em> is considered as a single thought.<div class="indented"><h3 id="e6718875-5d43-45e4-86c4-2536e87677a6" class=""><code><strong>space:: ship</strong></code></h3></div></p><figure id="2d891870-48ad-401f-9991-38c79a5482fc" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space1_Ship1.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space1_Ship1.jpg"/></a></figure><p id="7392cdac-99d3-4cd3-bc51-700f0a15b651" class=""><em>space</em> and <em>ship</em> are considered separate thoughts<div class="indented"><p id="8d904bee-1285-4b71-8cf1-30fc6fa6a93c" class=""><code><strong>cheese cake painting</strong></code></p></div></p><figure id="3f1ea96f-a6f6-4e32-8c79-93190896febf" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Cheese_Cake_Painting.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Cheese_Cake_Painting.jpg"/></a></figure><p id="6fd3450d-7c35-4d58-84e6-b0c1bc6686c5" class=""><em>cheese cake painting</em> is considered together, producing a painted image of a cheesecake.<div class="indented"><p id="d979fbe8-3576-47a0-9cc1-68450b870fd2" class=""><code><strong>cheese:: cake painting</strong></code></p></div></p><figure id="8c32ce3f-9939-420f-be41-60f777596bd8" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Cheese1_Cake_Painting.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Cheese1_Cake_Painting.jpg"/></a></figure><p id="4daba391-05ce-452d-bb34-eec381776bd4" class=""><em>cheese</em> is considered separately from <em>cake painting</em>, producing images of painted cakes made of cheeses.<div class="indented"><p id="53f9167e-dfb6-43f3-a37c-341182dffe48" class=""><code><strong>cheese:: cake:: painting</strong></code></p></div></p><figure id="becb0b5b-4731-4f45-b51a-4a291629011f" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Cheese1_Cake1_Painting1.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Cheese1_Cake1_Painting1.jpg"/></a></figure><p id="74ae07c6-4b5a-475a-a4c2-85bfc8d9c5f2" class=""><em>cheese</em>, <em>cake</em>, and <em>painting</em> are considered separately, producing tiered cakes, made of cheeses with common classical painting compositions and elements.</p><h2 id="a7600cce-7939-4332-89d6-302ac2d8588d" class=""><strong>Prompt Weights</strong></h2><p id="48afbd6c-0e10-4835-a15c-63461cdf3a21" class="">When a double colon <code><strong>::</strong></code> is used to separate a prompt into different parts, you can add a number immediately after the double colon to assign the relative importance to that part of the prompt.</p><p id="2ce1c2ae-05a9-4b4d-853e-086186e875dc" class="">In the example below, the prompt <code><strong>space:: ship</strong></code> produced a sailing ship traveling through space. Changing the prompt to <code><strong>space::2 ship</strong></code> makes the word <strong>space</strong> twice as important as the word ship, producing images of space that have ships as a supporting element.</p><p id="db4a52c9-57b0-469a-b8e3-b3b78d95465a" class="">[Model Versions] <code><strong>1</strong></code>, <code><strong>2</strong></code>, <code><strong>3</strong></code> only accept whole numbers as weights</p><p id="0913bba8-9e40-4a6a-b611-2d3ad1c52b24" class="">[Model Versions] <code><strong>4</strong></code>, <code><strong>niji 4</strong></code>, <code><strong>niji 5</strong></code>, <code><strong>5</strong></code>, <code><strong>5.1</strong></code>, and <code><strong>5.2</strong></code> and can accept decimal places for weights</p><p id="39e405ff-7c2a-49b3-a35b-bde29898687e" class="">Non-specified weights default to 1.<div class="indented"><h3 id="1816fe8f-a7fa-4212-8432-4a8530bb62b6" class=""><code><strong>space:: ship</strong></code></h3></div></p><figure id="61c72d13-7fc4-46b8-aaff-50199d514948" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space1_Ship1.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space1_Ship1.jpg"/></a></figure><p id="50bc2578-ef38-44cb-8e2f-e5160ae765eb" class=""><em>space</em> and <em>ship</em> are considered as separate thoughts<div class="indented"><h3 id="de3d73db-9049-4e51-8936-49e9caa2e28f" class=""><code><strong>space::2 ship</strong></code></h3></div></p><figure id="6cd0d448-15d4-41e1-ba73-2bc9d8253b15" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space2_Ship1.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/Midjourney_MultiPrompt_Space2_Ship1.jpg"/></a></figure><p id="d4f72bb2-52d6-4799-9d22-c05c9ecb301e" class=""><em>space</em> is twice as important as <em>ship</em><div class="indented"><p id="495e192f-b74b-4713-9b1a-1fab7832b3f4" class=""><strong>Weights are normalized:</strong></p></div></p><p id="acd9b6ae-94e7-47d6-907c-bd029a8cc9b3" class=""><code><strong>space:: ship</strong></code> is the same as <code><strong>space::1 ship</strong></code>, <code><strong>space:: ship::1</strong></code>,<code><strong>space::2 ship::2</strong></code>, <code><strong>space::100 ship::100</strong></code>, etc.</p><p id="01970075-6e5a-4037-89f2-0223c5e65f65" class=""><code><strong>cheese::2 cake</strong></code> is the same as <code><strong>cheese::4 cake::2</strong></code>, <code><strong>cheese::100 cake::50</strong></code> etc.</p><p id="67d37333-96da-4fba-b154-e465687d788e" class=""><code><strong>cheese:: cake:: painting</strong></code> is the same as <code><strong>cheese::1 cake::1 painting::1</strong></code>, <code><strong>cheese::1 cake:: painting::</strong></code>, <code><strong>cheese::2 cake::2 painting::2</strong></code> etc.</p><hr id="a42852f5-4f7f-4f67-ab01-38049aa57450"/><h3 id="5c5078e7-1e59-4c11-af32-68f4e81a11bc" class=""><strong>Negative Prompt Weights</strong></h3><p id="312b6d1e-292a-4097-85ca-d0f2c7220299" class="">Negative weights can be added to parts of a multi-prompt to help remove unwanted elements.</p><p id="d4c995ef-281f-4d11-b726-379f87061cd8" class="">The sum of all weights must be a positive number.</p><p id="4c98af5a-fc11-42b2-a274-5f8c7b6d842e" class=""><code><strong>still life gouache painting</strong></code></p><figure id="d3ff2377-6214-4be1-bd19-5a3d35e56089" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/MJ_NO_StillLife.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/MJ_NO_StillLife.jpg"/></a></figure><p id="a7f14db1-4daf-4a36-93ea-d98d83f58ccd" class="">a range of objects appear in the still life</p><p id="0ef9f667-1203-4689-9219-d42cd41664bb" class=""><code><strong>still life gouache painting:: fruit::-.5</strong></code></p><figure id="f09a2462-12ad-4154-9b02-1325354ef746" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/MJ_NO_StillLife_NoFruit.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/MJ_NO_StillLife_NoFruit.jpg"/></a></figure><p id="73e49b4e-e857-4128-b4c5-c3e6f910a4e5" class="">The still life has fewer fruits</p><h3 id="8e4b0c56-af51-4312-b8b1-80334cd1d6b3" class=""><strong>The </strong><code><strong>-no</strong></code><strong> Parameter</strong></h3><p id="6f5ec9a8-3870-4402-8b6f-8a9b42b3354c" class="">The <code><strong>--no</strong></code> <a href="https://docs.midjourney.com/no">parameter</a> is the same as weighing part of a multi prompt to &quot;-.5&quot; <code><strong>vibrant tulip fields:: red::-.5</strong></code> is the same as <code><strong>vibrant tulip fields --no red</strong></code>.</p><p id="fbedd07b-4f4f-40ce-8aa1-19f11741e06a" class="">
+</p><h1 id="7244c13e-0b87-44b5-8cdf-d2919c00e405" class="">Stylize</h1><ul id="565d4432-7c97-4f46-bdb3-d4a4d106ce99" class="bulleted-list"><li style="list-style-type:disc">Light</li></ul><hr id="2759009d-83e1-427e-933b-08cce9930a4f"/><h3 id="aedaa4d1-5d7f-412c-84ad-95290ad05f74" class=""><strong>The Midjourney Bot has been trained to produce images that favor artistic color, composition, and forms. The </strong><code><strong>-stylize</strong></code><strong> or </strong><code><strong>-s</strong></code><strong> parameter influences how strongly this training is applied. Low stylization values produce images that closely match the prompt but are less artistic. High stylization values create images that are very artistic but less connected to the prompt.</strong></h3><ul id="f7209050-a31f-486c-a0c9-e20791c9f9a5" class="bulleted-list"><li style="list-style-type:disc"><code><strong>-stylize</strong></code>&#x27;s default value is 100 and accepts integer values 0–1000 when using the <a href="https://docs.midjourney.com/models"><strong>current model</strong></a></li></ul><p id="e170eb06-de3f-4ecf-96a4-a554cf081364" class="">Different <a href="https://docs.midjourney.com/models">Midjourney Version Models</a> have different stylize ranges.</p><table id="259322c7-23c0-4147-ba8e-4c870c3af03c" class="simple-table"><tbody><tr id="4f5f61f6-e2c3-43d3-9d8a-373a70628c0b"><td id="eNb=" class=""></td><td id="FE]~" class=""><strong>Version 5, 5.1, 5.2</strong></td><td id="|mzN" class=""><strong>Version 4</strong></td><td id="mPOW" class=""><strong>niji 5</strong></td></tr><tr id="1c725555-6c10-4693-bc64-ec292605c48d"><td id="eNb=" class="">Stylize default</td><td id="FE]~" class="">100</td><td id="|mzN" class="">100</td><td id="mPOW" class="">100</td></tr><tr id="c5256b5d-6e18-4f0e-8883-820b42f2d8a2"><td id="eNb=" class="">Stylize Range</td><td id="FE]~" class="">0–1000</td><td id="|mzN" class="">0–1000</td><td id="mPOW" class="">0–1000</td></tr></tbody></table><hr id="b86ac40b-366f-41ec-9571-6b61654cfa5a"/><h2 id="911a74c7-002e-46a9-9bc7-54b9cc02e656" class=""><strong>Common Stylize Settings</strong></h2><h3 id="73a5b625-0854-4e19-9ba9-40c3bffc0820" class=""><strong>Influence of Stylize on Model Version 5.2</strong></h3><p id="e2dae820-dc36-422c-9b77-8a501d0cd86c" class="">prompt example: <code><strong>/imagine prompt</strong></code> <code><strong>child&#x27;s drawing of a cat --s 100</strong></code></p><h3 id="2f88ef16-fa08-46cf-9229-bde75d3645a9" class=""><code><strong>-stylize 0</strong></code></h3><figure id="7a2b15b7-fd6e-4e16-9e72-814efd9737ac" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_0.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_0.jpg"/></a></figure><h3 id="0c62d404-b30c-428c-8173-fbb49b730c35" class=""><code><strong>-stylize 50</strong></code></h3><figure id="b69de5fc-36b0-4c3a-bfe3-79574033f14e" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_50.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_50.jpg"/></a></figure><p id="a01c3502-3b15-489c-a253-af5e37a5ed1f" class="">Equal to</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="f9d25848-2b1e-4f20-bf35-a8773f2184c5" class="code code-wrap"><code class="language-Plain Text">🖌️ Style Low</code></pre><h3 id="eab191b0-ab42-435b-a73a-058e8fe91e7b" class=""><code><strong>-stylize 100</strong></code> (default)</h3><figure id="4bfb4a1d-b64f-4a31-8607-7561a9061d73" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_100.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_100.jpg"/></a></figure><p id="6cbd322b-cb10-4c07-a93f-b917e817fffe" class="">Equal to</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="32ea6ccb-8a95-4597-8b9f-c14defcb6f7f" class="code code-wrap"><code class="language-Plain Text">🖌️ Style Med</code></pre><h3 id="72b657c4-88c4-4fc1-91a3-541cb494f758" class=""><code><strong>-stylize 250</strong></code></h3><figure id="406a9dd2-a588-4d7b-9c5b-9a3fa9b58916" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_250.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_250.jpg"/></a></figure><p id="b293f70a-d12b-43dd-80f2-d5fd2acaabb8" class="">Equal to</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="0234dfd5-6c2d-4629-aa4f-5bba910df50e" class="code code-wrap"><code class="language-Plain Text">🖌️ Style High</code></pre><h3 id="978857bf-3807-48ec-ae77-84424489100b" class=""><code><strong>-stylize 500</strong></code></h3><figure id="e8fde5d5-1ebc-4f68-992a-c7c410d5e1a6" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_500.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_500.jpg"/></a></figure><h3 id="54789919-bfce-4e7b-b753-298ad07c8495" class=""><code><strong>-stylize 750</strong></code></h3><figure id="4a1e5817-4d72-4764-af6e-8a690a36da3e" class="image"><a href="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_750.jpg"><img src="https://cdn.document360.io/3040c2b6-fead-4744-a3a9-d56d621c6c7e/Images/Documentation/stylize_v52_Childcat_750.jpg"/></a></figure><p id="49302b5e-e404-4ddf-a593-4ed85cea3e0d" class="">Equal to</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27ae4500-4ae8-48f9-b126-017e6fd670ad" class="code code-wrap"><code class="language-Plain Text">🖌️ Style Very High</code></pre><p id="22e3ba87-cc4d-4d8c-bd8e-895133dfd8ac" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
